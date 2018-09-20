@@ -4,6 +4,9 @@
     <button onclick="cleanAndCountCharacters()">
         clean and count words
     </button>
+    <button onclick="renderReversedElements()">
+        Reverse List
+    </button>
     <body>
     </body>
 </html>
@@ -69,7 +72,10 @@
 
     function clearDocument() {
         var rootDiv = document.getElementById('rootContainer');
+        // console.log(rootDiv.nodeName);// print error because element is null
+        // if there's rootContainer => remove all inside
         if (rootDiv) {
+            // remove child elements(nodes) inside the rootDiv, until empty 
             while (rootDiv.hasChildNodes()) {
                 rootDiv.removeChild(rootDiv.lastChild);
             }
@@ -79,21 +85,22 @@
     function initDocument() {
         clearDocument();
         var rootDiv = document.createElement('div');
-        rootDiv.id = 'rootContainer';
+        rootDiv.id = 'rootContainer'; // <div id='rootContainer'></div>
         var companyNamesContainer = document.createElement('div');
         chicagoStartups.forEach( function(chicagoStartup, index) {
             var childDiv = document.createElement('div');
             var text = document.createTextNode(index.toString().concat(' .) ').concat(chicagoStartup));
-            childDiv.appendChild(text);
-            companyNamesContainer.appendChild(childDiv);
+            childDiv.appendChild(text); // wrap textnode as div : <div>com1</div> <div>com2</div> <div>com3</com>....
+            companyNamesContainer.appendChild(childDiv); // add childDiv to companyName div 
         });
-        rootDiv.appendChild(companyNamesContainer);
-        document.body.appendChild(rootDiv);
+        rootDiv.appendChild(companyNamesContainer); // add companyName div to rootDiv
+        document.body.appendChild(rootDiv); // append to body
     }
 
     function renderReversedElements() {
         var reverseContainer = document.getElementById('reverseContainer');
         var reversedChicagoStartups = [];
+        // if rendered, swich 
         if (reverseContainer) {
             if (reverseContainer.hasChildNodes()) {
                 while (reverseContainer.hasChildNodes()) {
@@ -108,6 +115,7 @@
                     reverseContainer.appendChild(childDiv);
                 });
             }
+            // if not, reverse origin 
             else {
                 //TODO:: REPLACE [chicagoStartups.reverse()] WITH A FUNCTION CALLED "chicagoStartupsReverse"
                 chicagoStartups.reverse().forEach( function(startup) {
@@ -143,7 +151,21 @@
               DISPLAYS THE NUMBER OF REMAINING CHARACTERS NEXT TO THE FULL WORD.
               DONT FORGET TO REMOVE LEADING AND TRAILING WHITESPACES AS WELL
         */
+        clearDocument();
+        var rootDiv = document.createElement('div');
+        rootDiv.id = 'rootContainer'; 
+        var companyNamesContainer = document.createElement('div');
 
+        chicagoStartups.forEach(function (chicagoStartup, index) {
+            chicagoStartup = chicagoStartup.replace(/[^a-zA-Z]/g, '');
+            chicagoStartupCount = chicagoStartup.length;
+            var childDiv = document.createElement('div');
+            var text = document.createTextNode(index.toString().concat(') ').concat(chicagoStartup).concat(' : ').concat(chicagoStartupCount));
+            childDiv.appendChild(text);
+            companyNamesContainer.appendChild(childDiv);
+        });
+        rootDiv.appendChild(companyNamesContainer);
+        document.body.appendChild(rootDiv);
     }
     
     function initReverse() {
@@ -155,6 +177,7 @@
         reverseBtn.appendChild(btnText);
         var reverseButtonContainer = document.createElement('div');
         reverseButtonContainer.appendChild(reverseBtn);    
+
         document.getElementById('rootContainer').appendChild(reverseButtonContainer);
         document.getElementById('rootContainer').appendChild(reverseContainer);
     }

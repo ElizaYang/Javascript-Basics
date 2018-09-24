@@ -168,12 +168,12 @@
               DISPLAYS THE NUMBER OF REMAINING CHARACTERS NEXT TO THE FULL WORD.
               DONT FORGET TO REMOVE LEADING AND TRAILING WHITESPACES AS WELL
         */
-        clearDocument();
-
-        var rootDiv = document.createElement('div');
-        rootDiv.id = 'rootContainer';
-        var companyNamesContainer = document.createElement('div');
-
+		var companyNamesContainer = document.getElementById('companyNamesContainer');
+		if (companyNamesContainer) {		
+			while (companyNamesContainer.hasChildNodes()) {
+					companyNamesContainer.removeChild(companyNamesContainer.lastChild);
+			}
+		}
         chicagoStartups.forEach(function (chicagoStartup, index) {
             chicagoStartup = chicagoStartup.replace(/[^a-zA-Z]/g, '');
             chicagoStartupCount = chicagoStartup.length;
@@ -184,9 +184,7 @@
         });
 
         document.getElementById('rootContainer').appendChild(companyNamesContainer);
-        //rootDiv.appendChild(companyNamesContainer);
-        document.body.appendChild(rootDiv);
-        initReverse();
+        //document.body.appendChild(rootDiv);
     }
 
     function initReverse() {
@@ -219,34 +217,35 @@
             3.  
         */
         var companyNamesContainer = document.getElementById('companyNamesContainer');
-
-        // if rendered vertical  
-        if (flags.toggleVertical) {
-            if (companyNamesContainer.hasChildNodes()) {
-                // clean previous content
-                while (companyNamesContainer.hasChildNodes()) {
-                    companyNamesContainer.removeChild(companyNamesContainer.lastChild);
-                }
+		console.log('companyNamesContainer: ' + companyNamesContainer);
+		if (companyNamesContainer && companyNamesContainer.hasChildNodes()) {
+            // clean previous content
+            while (companyNamesContainer.hasChildNodes()) {
+                companyNamesContainer.removeChild(companyNamesContainer.lastChild);
             }
-            // => switch to horizontal
-            chicagoStartups.forEach(function (chicagoStartup, index) {
-                var childSpan = document.createElement('span');
-                var text = document.createTextNode(chicagoStartup);
-                childSpan.appendChild(text);
-                companyNamesContainer.appendChild(childSpan);
-            });
-            flags.toggleVertical = false;
-            console.log(flags.toggleVertical);
-        }
-        // if render horizontal 
-        else {
-            chicagoStartups.forEach(function (startup) {
-                var childDiv = document.createElement('div');
-                var text = document.createTextNode(startup);
-                childDiv.appendChild(text);
-                companyNamesContainer.appendChild(childDiv);
-            });
-        }
+		}
+		// if rendered vertical  
+		if (toggleVertical) {		
+			// => switch to horizontal
+			chicagoStartups.forEach(function (chicagoStartup, index) {
+				var childSpan = document.createElement('span');
+				var text = document.createTextNode(chicagoStartup);
+				childSpan.appendChild(text);
+				companyNamesContainer.appendChild(childSpan);
+				});
+				toggleVertical = false;
+				console.log(toggleVertical);
+		}
+			// if render horizontal 
+		else {
+			chicagoStartups.forEach(function (startup) {
+				var childDiv = document.createElement('div');
+				var text = document.createTextNode(startup);
+				childDiv.appendChild(text);
+				companyNamesContainer.appendChild(childDiv);
+			});
+			toggleVertical = true;
+		}			        
     }
 
 
